@@ -1,6 +1,53 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
+    <script>
+    // Parche de compatibilidad para emular la API de Chrome en navegadores móviles
+    if (typeof chrome === 'undefined' || !chrome.runtime) {
+        window.chrome = {
+            runtime: {
+                id: "mobile-webapp-mock",
+                sendMessage: function(msg, callback) {
+                    console.log("Mock chrome.sendMessage:", msg);
+                    if (callback) callback({ success: true });
+                },
+                onMessage: {
+                    addListener: function() {}
+                }
+            },
+            storage: {
+                local: {
+                    get: function(keys, cb) {
+                        const result = {};
+                        if (typeof keys === 'string') keys = [keys];
+                        if (Array.isArray(keys)) {
+                            keys.forEach(k => {
+                                const val = localStorage.getItem(k);
+                                if (val) {
+                                    try { result[k] = JSON.parse(val); } catch(e) { result[k] = val; }
+                                }
+                            });
+                        }
+                        if (cb) cb(result);
+                        return Promise.resolve(result);
+                    },
+                    set: function(items, cb) {
+                        for (let k in items) {
+                            localStorage.setItem(k, JSON.stringify(items[k]));
+                        }
+                        if (cb) cb();
+                        return Promise.resolve();
+                    }
+                }
+            },
+            tabs: {
+                query: function(info, cb) { if (cb) cb([{id: 1, url: window.location.href}]); },
+                create: function(props) { window.location.href = props.url; }
+            }
+        };
+    }
+</script>
+
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
     <title>Syklo Ops Dashboard v7.1 (Delay)</title>
