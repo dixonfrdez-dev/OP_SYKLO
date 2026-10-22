@@ -24,3 +24,6 @@ function solicitarNotificacion(titulo, texto) {
     });
   }
 }
+
+hablarAlerta("Sistema de alertas activo");
+solicitarNotificacion("Syklo Ops", "Las alertas están configuradas correctamente");
