@@ -1,69 +1,55 @@
-// js/alertas.js - Audio Beep NATIVO + Sintetizador de Voz Móvil
-
-// Función para emitir un tono de beep real nativo del celular
-function emitirBeep(frecuencia = 800, duracion = 300) {
-    try {
-        const AudioContext = window.AudioContext || window.webkitAudioContext;
-        if (!AudioContext) return;
-        const ctx = new AudioContext();
-        const osc = ctx.createOscillator();
-        const gain = ctx.createGain();
-        osc.type = 'sine';
-        osc.frequency.value = frecuencia;
-        osc.connect(gain);
-        gain.connect(ctx.destination);
-        osc.start();
-        setTimeout(() => {
-            osc.stop();
-            ctx.close();
-        }, duracion);
-    } catch (e) {
-        console.error("Error al reproducir audio beep:", e);
-    }
-}
+// js/alertas.js - Centro de Control Flotante para Web App Móvil
 
 function hablarAlerta(mensaje) {
-    // 1. Siempre emitimos un pitido sonoro instantáneo
-    emitirBeep(880, 250);
-
-    // 2. Intentamos reproducir la voz
+    console.log("🗣️ Alerta:", mensaje);
     if ('speechSynthesis' in window) {
-        window.speechSynthesis.cancel(); // Limpiar cola previa
-
+        window.speechSynthesis.cancel();
         const utterance = new SpeechSynthesisUtterance(mensaje);
         utterance.lang = 'es-ES';
-        utterance.rate = 1.0;
-
-        // Cargar voces disponibles en Android/iOS
-        const voices = window.speechSynthesis.getVoices();
-        const spanishVoice = voices.find(v => v.lang.startsWith('es'));
-        if (spanishVoice) utterance.voice = spanishVoice;
-
         window.speechSynthesis.speak(utterance);
     }
 }
 
-function activarSistemaAlertas() {
-    // Confirmación sonora doble para verificar que el evento funciona
-    emitirBeep(600, 150);
-    setTimeout(() => emitirBeep(1200, 250), 200);
-
-    // Intentar reproducir voz
-    hablarAlerta("Sistema de alertas activado correctamente");
-
-    // Permisos de notificación
-    if ('Notification' in window) {
-        Notification.requestPermission().then(permission => {
-            if (permission === 'granted') {
-                new Notification("Syklo Ops", { body: "Notificaciones activas" });
-            }
-        });
+function solicitarNotificacion(titulo, cuerpo) {
+    if ('Notification' in window && Notification.permission === 'granted') {
+        new Notification(titulo, { body: cuerpo });
     }
 }
 
-// Cargar voces del sistema al iniciar
-if ('speechSynthesis' in window) {
-    window.speechSynthesis.onvoiceschanged = () => {
-        window.speechSynthesis.getVoices();
-    };
+function activarSistemaAlertas() {
+    hablarAlerta("Centro de control activado");
+    if ('Notification' in window && Notification.permission !== 'granted') {
+        Notification.requestPermission();
+    }
+    crearCentroControlFlotante();
 }
+
+// Crear panel flotante visual en la pantalla si no existe
+function crearCentroControlFlotante() {
+    if (document.getElementById('syklo-floating-hub')) return;
+
+    const hub = document.createElement('div');
+    hub.id = 'syklo-floating-hub';
+    hub.style.cssText = `
+        position: fixed; bottom: 20px; right: 20px; z-index: 2147483647;
+        background: #0f172a; border: 2px solid #3b82f6; border-radius: 30px;
+        padding: 8px 16px; display: flex; align-items: center; gap: 10px;
+        box-shadow: 0 10px 25px rgba(0,0,0,0.8); color: white; font-family: sans-serif;
+    `;
+    hub.innerHTML = `
+        <div style="width: 10px; height: 10px; background: #22c55e; border-radius: 50%; box-shadow: 0 0 8px #22c55e;"></div>
+        <span style="font-size: 12px; font-weight: bold;">🤖 Centro de Control</span>
+        <button id="test-voz-btn" style="background: #3b82f6; border: none; color: white; padding: 4px 8px; border-radius: 12px; font-size: 10px; cursor: pointer;">Test Voz</button>
+    `;
+
+    document.body.appendChild(hub);
+
+    document.getElementById('test-voz-btn').addEventListener('click', () => {
+        hablarAlerta("Prueba de audio exitosa en web app");
+    });
+}
+
+// Auto-iniciar el panel flotante al cargar la página
+window.addEventListener('DOMContentLoaded', () => {
+    crearCentroControlFlotante();
+});
