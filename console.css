@@ -1,0 +1,443 @@
+/* console.css - V2.0 (Diseño Táctico & Modular) */
+
+/* --- CONTENEDOR PRINCIPAL --- */
+#at-console-root {
+    position: fixed;
+    bottom: 20px;
+    left: 20px;
+    width: 450px;
+    background-color: #0f172a; /* Slate 900 */
+    border: 1px solid #3b82f6; /* Blue 500 */
+    border-radius: 8px;
+    z-index: 99999;
+    font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+    box-shadow: 0 10px 40px rgba(0,0,0,0.8);
+    display: flex;
+    flex-direction: column;
+    max-height: 85vh;
+    transition: all 0.3s ease;
+}
+
+#at-console-root.minimized {
+    width: 220px;
+    height: 42px;
+    overflow: hidden;
+    border-color: #334155;
+}
+
+/* --- HEADER --- */
+.at-header {
+    background: #1e293b;
+    padding: 10px 15px;
+    border-bottom: 1px solid #334155;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-radius: 8px 8px 0 0;
+    cursor: pointer;
+    user-select: none;
+}
+
+.at-title {
+    font-weight: 700;
+    color: #60a5fa;
+    font-size: 14px;
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+
+.at-status-led {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: #ef4444;
+    box-shadow: 0 0 5px #ef4444;
+    transition: all 0.3s;
+}
+
+.at-status-led.active {
+    background: #22c55e;
+    box-shadow: 0 0 8px #22c55e;
+}
+
+/* --- TABS --- */
+.at-tabs {
+    display: flex;
+    background: #0f172a;
+    border-bottom: 1px solid #334155;
+}
+
+.at-tab-btn {
+    flex: 1;
+    background: none;
+    border: none;
+    padding: 10px;
+    color: #94a3b8;
+    cursor: pointer;
+    font-size: 12px;
+    font-weight: 600;
+    transition: all 0.2s;
+    border-bottom: 2px solid transparent;
+}
+
+.at-tab-btn:hover {
+    background: rgba(255,255,255,0.05);
+    color: #e2e8f0;
+}
+
+.at-tab-btn.active {
+    color: #3b82f6;
+    border-bottom: 2px solid #3b82f6;
+    background: rgba(59, 130, 246, 0.1);
+}
+
+/* --- CONTENIDO --- */
+.at-content {
+    flex: 1;
+    overflow-y: auto;
+    position: relative;
+    background: #0f172a;
+}
+
+.at-pane {
+    display: none;
+    padding: 0;
+}
+
+.at-pane.active {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+/* =========================================
+   ESTILOS DE LOGS INTELIGENTES (TÁCTICOS)
+   ========================================= */
+
+.at-log-controls {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 15px;
+    border-bottom: 1px solid #334155;
+    background: #1e293b;
+    font-size: 11px;
+}
+
+.at-log-list {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    padding: 10px;
+    overflow-y: auto;
+}
+
+/* Tarjeta Base de Log */
+.at-log-card {
+    background: rgba(30, 41, 59, 0.6);
+    border-left: 3px solid #64748b;
+    border-radius: 4px;
+    padding: 10px;
+    font-size: 12px;
+    color: #cbd5e1;
+    transition: all 0.2s;
+    animation: slideIn 0.3s ease-out;
+    border: 1px solid rgba(255,255,255,0.05);
+    border-left-width: 3px;
+}
+
+@keyframes slideIn {
+    from { opacity: 0; transform: translateX(-10px); }
+    to { opacity: 1; transform: translateX(0); }
+}
+
+/* Variantes de Tarjetas */
+.at-log-card.analysis { 
+    border-left-color: #3b82f6; 
+    background: rgba(59, 130, 246, 0.05); 
+} /* Azul - Info General */
+
+.at-log-card.attack { 
+    border-left-color: #eab308; 
+    background: rgba(234, 179, 8, 0.1); 
+    border-right: 1px solid rgba(234, 179, 8, 0.2);
+} /* Amarillo - Modo Batalla */
+
+.at-log-card.success { 
+    border-left-color: #22c55e; 
+    background: rgba(34, 197, 94, 0.1); 
+} /* Verde - Éxito */
+
+.at-log-card.ignore { 
+    border-left-color: #64748b; 
+    opacity: 0.75; 
+} /* Gris - Ignorado */
+
+.at-log-card.error { 
+    border-left-color: #ef4444; 
+    background: rgba(239, 68, 68, 0.1); 
+} /* Rojo - Error */
+
+/* Elementos Internos del Log */
+.log-header {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 6px;
+    font-weight: 700;
+    text-transform: uppercase;
+    font-size: 10px;
+    letter-spacing: 0.5px;
+    align-items: center;
+}
+
+.log-body {
+    line-height: 1.5;
+}
+
+.log-stat {
+    display: inline-block;
+    background: rgba(0,0,0,0.4);
+    padding: 2px 6px;
+    border-radius: 3px;
+    margin: 0 2px;
+    font-family: 'Consolas', monospace;
+    font-size: 11px;
+    color: #e2e8f0;
+    border: 1px solid rgba(255,255,255,0.1);
+}
+
+.log-highlight { 
+    color: #fff; 
+    font-weight: 700; 
+}
+
+.log-subtext { 
+    color: #94a3b8; 
+    font-style: italic; 
+    margin-top: 8px; 
+    display: block; 
+    font-size: 11px;
+    border-top: 1px dashed rgba(255,255,255,0.1);
+    padding-top: 4px;
+}
+
+/* =========================================
+   PESTAÑA DE CONFIGURACIÓN
+   ========================================= */
+
+#tab-config {
+    padding: 15px;
+}
+
+.at-method-group {
+    margin-bottom: 15px;
+    border: 1px solid #334155;
+    border-radius: 6px;
+    overflow: hidden;
+    background: #1e293b;
+}
+
+.at-method-header {
+    background: #0f172a;
+    padding: 8px 12px;
+    font-weight: bold;
+    color: #e2e8f0;
+    font-size: 12px;
+    border-bottom: 1px solid #334155;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.at-method-body {
+    padding: 10px;
+}
+
+.at-side-config {
+    margin-bottom: 10px;
+    padding-bottom: 10px;
+    border-bottom: 1px dashed #334155;
+}
+
+.at-side-config:last-child {
+    margin-bottom: 0;
+    border-bottom: none;
+    padding-bottom: 0;
+}
+
+.at-side-title {
+    font-size: 11px;
+    font-weight: bold;
+    margin-bottom: 8px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.at-buy-text { color: #4ade80; }
+.at-sell-text { color: #f87171; }
+
+.at-form-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 6px;
+    font-size: 11px;
+    color: #cbd5e1;
+}
+
+/* Inputs y Selects */
+.at-input, .at-select {
+    background: #0f172a;
+    border: 1px solid #475569;
+    color: white;
+    padding: 4px 6px;
+    border-radius: 4px;
+    font-size: 11px;
+    width: 110px;
+    font-family: inherit;
+}
+
+.at-input:focus, .at-select:focus {
+    border-color: #3b82f6;
+    outline: none;
+}
+
+/* Toggle Switch */
+.at-switch {
+    position: relative;
+    display: inline-block;
+    width: 30px;
+    height: 16px;
+}
+
+.at-switch input { opacity: 0; width: 0; height: 0; }
+
+.at-slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background-color: #475569;
+    transition: .4s;
+    border-radius: 34px;
+}
+
+.at-slider:before {
+    position: absolute;
+    content: "";
+    height: 10px; width: 10px;
+    left: 3px; bottom: 3px;
+    background-color: white;
+    transition: .4s;
+    border-radius: 50%;
+}
+
+input:checked + .at-slider { background-color: #3b82f6; }
+input:checked + .at-slider:before { transform: translateX(14px); }
+
+/* Scrollbars */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: #0f172a; }
+::-webkit-scrollbar-thumb { background: #334155; border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: #475569; }
+/* =========================================
+   V3.1 — FAVORITOS, OCULTOS Y SECCIONES
+   ========================================= */
+
+/* Etiqueta de sección (⭐ Favoritos / 📋 Métodos) */
+.at-section-label {
+    font-size: 10px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    color: #64748b;
+    padding: 4px 2px;
+    margin-bottom: 6px;
+    border-bottom: 1px solid #1e293b;
+}
+
+/* Método favorito — borde dorado */
+.at-method-group.at-favorite {
+    border-color: #854d0e;
+    background: linear-gradient(135deg, #1e293b, #1c1407);
+}
+
+.at-method-group.at-favorite .at-method-header {
+    background: rgba(234, 179, 8, 0.08);
+    border-bottom-color: #854d0e;
+}
+
+/* Método oculto — apagado */
+.at-method-group.at-hidden-method {
+    opacity: 0.55;
+    border-color: #1e293b;
+    background: #0a0f1a;
+}
+
+.at-method-group.at-hidden-method .at-method-header {
+    background: #0a0f1a;
+}
+
+/* Botones de control en el header del método */
+.at-ctrl-btn {
+    background: none;
+    border: 1px solid #334155;
+    border-radius: 4px;
+    padding: 2px 6px;
+    font-size: 11px;
+    cursor: pointer;
+    color: #94a3b8;
+    transition: all 0.15s;
+    line-height: 1.4;
+}
+
+.at-ctrl-btn:hover {
+    background: rgba(255,255,255,0.07);
+    border-color: #475569;
+    color: #e2e8f0;
+}
+
+/* Estrella activa */
+.at-fav-btn.active {
+    color: #facc15;
+    border-color: #854d0e;
+    background: rgba(234, 179, 8, 0.1);
+}
+
+.at-fav-btn.active:hover {
+    background: rgba(234, 179, 8, 0.2);
+}
+
+/* Botón restaurar (en sección ocultos) */
+.at-show-btn {
+    font-size: 10px;
+    color: #60a5fa;
+    border-color: #1e3a8a;
+}
+
+.at-show-btn:hover {
+    background: rgba(59, 130, 246, 0.15);
+    border-color: #3b82f6;
+    color: #93c5fd;
+}
+
+/* Botón "Mostrar ocultos (N)" */
+.at-hidden-toggle {
+    width: 100%;
+    margin-top: 10px;
+    padding: 7px;
+    background: transparent;
+    border: 1px dashed #334155;
+    border-radius: 5px;
+    color: #64748b;
+    font-size: 11px;
+    cursor: pointer;
+    transition: all 0.2s;
+    text-align: center;
+}
+
+.at-hidden-toggle:hover {
+    border-color: #475569;
+    color: #94a3b8;
+    background: rgba(255,255,255,0.03);
+}
