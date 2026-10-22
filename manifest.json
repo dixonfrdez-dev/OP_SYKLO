@@ -1,0 +1,41 @@
+{
+  "manifest_version": 3,
+  "name": "Syklo Ops Alerter Pro",
+  "version": "45.0",
+  "description": "Sistema avanzado con Consola Modular y Modo Batalla.",
+  "permissions": [
+    "storage",
+    "tabs",
+    "alarms",
+    "downloads",
+    "activeTab",
+    "<all_urls>",
+    "debugger"
+  ],
+  "host_permissions": [
+    "https://basthiancasparod-cmyk.github.io/*",
+"https://wbasthian.github.io/OP_SYKLO/*",
+    "https://explorer.syklo.io/*",
+    "https://webapp.syklo.io/*", 
+    "https://api.telegram.org/*"
+  ],
+  "background": {
+    "service_worker": "background.js"
+  },
+  "content_scripts": [
+    {
+      "matches": [
+        "https://basthiancasparod-cmyk.github.io/OP_SYKLO/*",
+"https://wbasthian.github.io/OP_SYKLO/*",
+        "https://explorer.syklo.io/*",
+        "https://webapp.syklo.io/*"
+      ],
+      "js": ["console.js", "content.js", "autotrader.js"],
+      "css": ["styles.css", "console.css"],
+      "all_frames": true
+    }
+  ],
+  "action": {
+    "default_popup": "popup.html"
+  }
+}
