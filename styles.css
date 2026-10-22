@@ -1,0 +1,838 @@
+/*
+ * styles.css - V16.0 (Analytics Panel + Mejoras)
+ */
+
+/* --- 1. ESTILOS BASE DEL CONTENEDOR DE ALERTAS --- */
+
+#syklo-alert-log-container {
+  position: fixed;
+  bottom: 16px;
+  right: 16px;
+  width: 380px;
+  max-width: 90%;
+  z-index: 9998;
+  background-color: rgba(30, 41, 59, 0.9);
+  backdrop-filter: blur(5px);
+  border: 1px solid #334155;
+  border-radius: 8px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+  display: flex;
+  flex-direction: column;
+}
+
+#syklo-log-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 12px;
+  border-bottom: 1px solid #334155;
+  color: #f1f5f9;
+}
+
+#syklo-log-header strong {
+  font-weight: 600;
+  font-size: 16px;
+}
+
+#syklo-log-entries {
+  max-height: 400px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 8px;
+  color: #e2e8f0;
+}
+
+/* --- 2. ESTILOS DE BOTONES Y CABECERA DEL PANEL DE ALERTAS --- */
+
+.syklo-header-buttons {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+#syklo-log-analytics-btn,
+#syklo-log-clear-btn,
+#syklo-log-toggle-btn,
+#syklo-log-tts-btn {
+  background: none;
+  border: 1px solid #334155;
+  color: #94a3b8;
+  font-size: 12px;
+  padding: 4px 8px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+#syklo-log-analytics-btn {
+  font-size: 14px;
+  padding: 4px 8px;
+}
+
+#syklo-log-clear-btn:hover,
+#syklo-log-analytics-btn:hover {
+  background: #334155;
+  color: white;
+}
+
+#syklo-log-toggle-btn,
+#syklo-log-tts-btn {
+  font-size: 14px;
+  font-weight: bold;
+  width: 28px;
+  height: 26px;
+  line-height: 1;
+  text-align: center;
+  font-family: "Segoe UI Emoji", "Apple Color Emoji", "Noto Color Emoji", sans-serif;
+}
+
+#syklo-log-toggle-btn:hover,
+#syklo-log-tts-btn:hover {
+  background: #334155;
+  color: white;
+}
+
+/* Estado minimizado */
+#syklo-alert-log-container.minimized #syklo-log-entries,
+#syklo-alert-log-container.minimized #syklo-log-clear-btn,
+#syklo-alert-log-container.minimized #syklo-log-analytics-btn {
+  display: none;
+}
+#syklo-alert-log-container.minimized {
+  width: auto;
+  max-height: 100px;
+}
+#syklo-alert-log-container.minimized #syklo-log-header {
+  border-bottom: none;
+}
+
+/* --- 3. ESTILOS DE LAS ENTRADAS DE LOG --- */
+
+.alert-entry {
+  padding: 10px;
+  border-radius: 6px;
+  background-color: rgba(15, 23, 42, 0.7);
+  border-left-width: 4px;
+  border-left-style: solid;
+}
+
+.alert-entry.info    { border-left-color: #3b82f6; }
+.alert-entry.success { border-left-color: #22c55e; }
+.alert-entry.warning { border-left-color: #f59e0b; }
+.alert-entry.error   { border-left-color: #ef4444; }
+
+.alert-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 4px;
+}
+
+.alert-timestamp {
+  font-size: 12px;
+  color: #94a3b8;
+}
+.alert-title {
+  font-size: 14px;
+  font-weight: 600;
+  color: #f1f5f9;
+}
+
+.alert-body {
+  font-size: 13px;
+  padding-left: 8px;
+  line-height: 1.4;
+}
+
+.alert-body ins {
+  color: #22c55e;
+  background: rgba(34, 197, 94, 0.1);
+  text-decoration: none;
+  font-weight: 600;
+  padding: 0 2px;
+}
+.alert-body del {
+  color: #ef4444;
+  background: rgba(239, 68, 68, 0.1);
+  text-decoration: none !important;
+  padding: 0 2px;
+}
+
+/* --- 4. ESTILOS DE RESALTADO EN EL DASHBOARD --- */
+
+@keyframes glow-animation {
+  0%   { box-shadow: 0 0 5px #ffeb3b; }
+  50%  { box-shadow: 0 0 20px 5px #ffeb3b; }
+  100% { box-shadow: 0 0 5px #ffeb3b; }
+}
+.highlight-change {
+  border: 2px solid #ffeb3b !important;
+  animation: glow-animation 1.5s infinite;
+  border-radius: 8px;
+}
+
+@keyframes glow-red-animation {
+  0%   { box-shadow: 0 0 5px #ef4444; }
+  50%  { box-shadow: 0 0 20px 5px #ef4444; }
+  100% { box-shadow: 0 0 5px #ef4444; }
+}
+.highlight-lost-position {
+  border: 3px solid #ef4444 !important;
+  animation: glow-red-animation 1.0s infinite;
+  border-radius: 8px;
+}
+.alert-entry.error .alert-title {
+    color: #f87171;
+    font-weight: 700;
+}
+
+/* --- 5. ESTILOS DE LA BARRA DE ACTIVIDAD --- */
+
+.syklo-activity-banner {
+    background-color: rgba(15, 23, 42, 0.8);
+    backdrop-filter: blur(3px);
+    border: 1px solid #334155;
+    border-bottom: none;
+    border-radius: 6px 6px 0 0;
+    padding: 4px 8px;
+    margin-bottom: 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    cursor: pointer;
+    position: relative;
+}
+
+.syklo-activity-summary {
+    font-size: 11px;
+    color: #cbd5e1;
+    white-space: nowrap;
+}
+.syklo-activity-summary .total-count {
+    font-weight: 600;
+    color: #f1f5f9;
+}
+.syklo-activity-summary .buy-count {
+    color: #22c55e;
+    font-weight: 600;
+}
+.syklo-activity-summary .sell-count {
+    color: #ef4444;
+    font-weight: 600;
+}
+
+.syklo-activity-toggle {
+    background: none;
+    border: 1px solid #475569;
+    color: #94a3b8;
+    font-size: 12px;
+    font-weight: bold;
+    width: 20px;
+    height: 20px;
+    line-height: 18px;
+    text-align: center;
+    border-radius: 4px;
+    padding: 0;
+    margin-left: 8px;
+}
+.syklo-activity-toggle:hover {
+    background-color: #334155;
+    color: white;
+}
+
+.syklo-activity-history {
+    background-color: rgba(30, 41, 59, 0.95);
+    border: 1px solid #334155;
+    border-top: none;
+    border-radius: 0 0 6px 6px;
+    max-height: 200px;
+    overflow-y: auto;
+    display: none;
+    padding: 8px;
+    position: relative;
+    z-index: 9997;
+}
+
+.syklo-activity-banner.expanded + .syklo-activity-history {
+    display: block;
+}
+
+.syklo-activity-entry {
+    padding: 5px 2px;
+    border-bottom: 1px dotted #334155;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 10px;
+    font-size: 11px;
+}
+.syklo-activity-entry:last-child {
+    border-bottom: none;
+}
+.syklo-activity-entry .time-trader {
+    color: #94a3b8;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+.syklo-activity-entry .amount {
+    font-weight: 600;
+    white-space: nowrap;
+}
+.syklo-activity-entry.buy .amount { color: #22c55e; }
+.syklo-activity-entry.sell .amount { color: #ef4444; }
+
+.syklo-activity-history p {
+    font-size: 12px;
+    color: #94a3b8;
+    text-align: center;
+    margin: 10px 0;
+}
+
+/* --- 6. NUEVO: PANEL DE ANALYTICS --- */
+
+#syklo-analytics-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.7);
+    backdrop-filter: blur(4px);
+    z-index: 10000;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+}
+
+#syklo-analytics-panel {
+    background-color: #1e293b;
+    border: 1px solid #334155;
+    border-radius: 12px;
+    width: 90%;
+    max-width: 900px;
+    max-height: 90vh;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.8);
+    overflow: hidden;
+}
+
+.analytics-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 16px 20px;
+    border-bottom: 2px solid #334155;
+    background-color: #0f172a;
+}
+
+.analytics-header h2 {
+    margin: 0;
+    color: #f1f5f9;
+    font-size: 20px;
+    font-weight: 600;
+}
+
+#close-analytics {
+    background: none;
+    border: none;
+    color: #94a3b8;
+    font-size: 28px;
+    font-weight: bold;
+    cursor: pointer;
+    width: 36px;
+    height: 36px;
+    line-height: 1;
+    border-radius: 6px;
+    transition: all 0.2s;
+}
+
+#close-analytics:hover {
+    background-color: #334155;
+    color: #f1f5f9;
+}
+
+.analytics-content {
+    flex: 1;
+    overflow-y: auto;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+}
+
+.analytics-section {
+    background-color: rgba(15, 23, 42, 0.5);
+    border: 1px solid #334155;
+    border-radius: 8px;
+    padding: 16px;
+}
+
+.analytics-section h3 {
+    margin: 0 0 12px 0;
+    color: #f1f5f9;
+    font-size: 16px;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.metric-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px 0;
+    border-bottom: 1px solid #334155;
+}
+
+.metric-row:last-child {
+    border-bottom: none;
+}
+
+.metric-label {
+    color: #94a3b8;
+    font-size: 14px;
+}
+
+.metric-value {
+    color: #f1f5f9;
+    font-weight: 600;
+    font-size: 14px;
+}
+
+.trader-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+    background-color: rgba(30, 41, 59, 0.5);
+    border-radius: 6px;
+    margin-bottom: 8px;
+}
+
+.trader-row:last-child {
+    margin-bottom: 0;
+}
+
+.trader-rank {
+    color: #f59e0b;
+    font-weight: bold;
+    font-size: 16px;
+    min-width: 32px;
+}
+
+.trader-name {
+    color: #e2e8f0;
+    font-size: 14px;
+    flex: 1;
+    margin-left: 12px;
+}
+
+.trader-volume {
+    color: #22c55e;
+    font-weight: 600;
+    font-size: 14px;
+}
+
+.risky-trader-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+    background-color: rgba(30, 41, 59, 0.5);
+    border-left: 3px solid #ef4444;
+    border-radius: 6px;
+    margin-bottom: 8px;
+}
+
+.risky-trader-row:last-child {
+    margin-bottom: 0;
+}
+
+.risk-badge {
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 12px;
+    font-weight: 600;
+}
+
+.risk-badge.risk-high {
+    background-color: rgba(239, 68, 68, 0.2);
+    color: #ef4444;
+}
+
+.risk-badge.risk-medium {
+    background-color: rgba(245, 158, 11, 0.2);
+    color: #f59e0b;
+}
+
+.behavior-type {
+    color: #94a3b8;
+    font-size: 12px;
+    font-style: italic;
+}
+
+.analytics-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 16px 20px;
+    border-top: 2px solid #334155;
+    background-color: #0f172a;
+    gap: 12px;
+}
+
+.analytics-btn {
+    flex: 1;
+    background-color: #3b82f6;
+    color: white;
+    border: none;
+    padding: 10px 16px;
+    border-radius: 6px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.analytics-btn:hover {
+    background-color: #2563eb;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+}
+
+/* Scrollbar personalizado para analytics */
+.analytics-content::-webkit-scrollbar,
+.syklo-activity-history::-webkit-scrollbar,
+#syklo-log-entries::-webkit-scrollbar {
+    width: 8px;
+}
+
+.analytics-content::-webkit-scrollbar-track,
+.syklo-activity-history::-webkit-scrollbar-track,
+#syklo-log-entries::-webkit-scrollbar-track {
+    background: rgba(30, 41, 59, 0.5);
+    border-radius: 4px;
+}
+
+.analytics-content::-webkit-scrollbar-thumb,
+.syklo-activity-history::-webkit-scrollbar-thumb,
+#syklo-log-entries::-webkit-scrollbar-thumb {
+    background: #475569;
+    border-radius: 4px;
+}
+
+.analytics-content::-webkit-scrollbar-thumb:hover,
+.syklo-activity-history::-webkit-scrollbar-thumb:hover,
+#syklo-log-entries::-webkit-scrollbar-thumb:hover {
+    background: #64748b;
+}
+
+/* Mensajes vacíos */
+#general-metrics p,
+#top-traders p,
+#opportunity-scores p,
+#risky-traders p {
+    text-align: center;
+    color: #64748b;
+    font-size: 14px;
+    padding: 20px;
+    margin: 0;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    #syklo-analytics-panel {
+        width: 95%;
+        max-height: 95vh;
+    }
+
+    .analytics-content {
+        padding: 12px;
+    }
+
+    .analytics-section {
+        padding: 12px;
+    }
+
+    .analytics-footer {
+        flex-direction: column;
+        gap: 8px;
+    }
+
+    .analytics-btn {
+        width: 100%;
+    }
+
+    #syklo-alert-log-container {
+        width: 95%;
+        bottom: 8px;
+        right: 8px;
+    }
+}
+
+.search-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 10px;
+    margin-bottom: 15px;
+    background: rgba(15, 23, 42, 0.3);
+    padding: 10px;
+    border-radius: 6px;
+}
+
+.search-input, .search-select {
+    background-color: #1e293b;
+    border: 1px solid #475569;
+    color: white;
+    padding: 8px;
+    border-radius: 4px;
+    width: 100%;
+    font-size: 13px;
+}
+
+.search-input:focus, .search-select:focus {
+    border-color: #3b82f6;
+    outline: none;
+}
+
+.special-tools {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 15px;
+    padding-bottom: 15px;
+    border-bottom: 1px dashed #334155;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.tool-group {
+    display: flex;
+    gap: 5px;
+    align-items: center;
+    background: rgba(59, 130, 246, 0.1);
+    padding: 5px 10px;
+    border-radius: 4px;
+    border: 1px solid rgba(59, 130, 246, 0.2);
+}
+
+.tool-label {
+    font-size: 12px;
+    color: #94a3b8;
+    font-weight: 600;
+    margin-right: 5px;
+}
+
+.results-container {
+    max-height: 300px;
+    overflow-y: auto;
+    border: 1px solid #334155;
+    border-radius: 6px;
+    background: #0f172a;
+}
+
+.results-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 12px;
+}
+
+.results-table th {
+    background-color: #1e293b;
+    color: #94a3b8;
+    padding: 8px;
+    text-align: left;
+    position: sticky;
+    top: 0;
+    border-bottom: 1px solid #334155;
+}
+
+.results-table td {
+    padding: 6px 8px;
+    border-bottom: 1px solid #334155;
+    color: #e2e8f0;
+}
+
+.results-table tr:hover {
+    background-color: rgba(59, 130, 246, 0.1);
+}
+
+.tag {
+    padding: 2px 6px;
+    border-radius: 3px;
+    font-size: 10px;
+    font-weight: bold;
+}
+.tag.buy { background: rgba(34, 197, 94, 0.2); color: #4ade80; }
+.tag.sell { background: rgba(239, 68, 68, 0.2); color: #f87171; }
+.tag.rate { background: rgba(59, 130, 246, 0.2); color: #60a5fa; }
+.tag.new { background: rgba(245, 158, 11, 0.2); color: #fbbf24; }
+
+.first-mover-result {
+    margin-top: 10px;
+    padding: 10px;
+    background: rgba(16, 185, 129, 0.1);
+    border: 1px solid rgba(16, 185, 129, 0.3);
+    border-radius: 6px;
+    color: #34d399;
+    font-weight: 500;
+    font-size: 13px;
+    display: none; /* Hidden by default */
+}
+
+/* --- 7. CONSOLA DE COMANDO AUTO-TRADE (NUEVO) --- */
+
+#autotrade-console {
+    position: fixed;
+    bottom: 20px;
+    left: 20px;
+    width: 400px;
+    background-color: rgba(15, 23, 42, 0.95); /* Azul oscuro solido */
+    border: 1px solid #3b82f6;
+    border-radius: 8px;
+    z-index: 12000;
+    font-family: 'Segoe UI', sans-serif;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+    display: flex;
+    flex-direction: column;
+    transition: all 0.3s ease;
+    max-height: 80vh;
+}
+
+#autotrade-console.minimized {
+    height: 40px;
+    overflow: hidden;
+    width: 200px;
+}
+
+/* Header */
+.at-header {
+    background: #1e293b;
+    padding: 10px 15px;
+    border-bottom: 1px solid #334155;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-radius: 8px 8px 0 0;
+    cursor: pointer;
+}
+
+.at-title {
+    color: #60a5fa;
+    font-weight: 700;
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.at-status-indicator {
+    width: 10px;
+    height: 10px;
+    background-color: #ef4444; /* Rojo por defecto */
+    border-radius: 50%;
+    box-shadow: 0 0 5px #ef4444;
+}
+.at-status-indicator.active {
+    background-color: #22c55e; /* Verde activo */
+    box-shadow: 0 0 5px #22c55e;
+}
+
+/* Configuración */
+.at-config-section {
+    padding: 15px;
+    border-bottom: 1px solid #334155;
+    background: rgba(30, 41, 59, 0.5);
+}
+
+.at-method-card {
+    background: #0f172a;
+    border: 1px solid #475569;
+    padding: 10px;
+    border-radius: 6px;
+    margin-bottom: 10px;
+}
+
+.at-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 8px;
+    font-size: 12px;
+    color: #cbd5e1;
+}
+
+.at-input {
+    background: #1e293b;
+    border: 1px solid #475569;
+    color: white;
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 12px;
+    width: 120px;
+}
+
+.at-input:focus { border-color: #3b82f6; outline: none; }
+
+/* Switch Toggle Pequeño */
+.at-switch {
+    position: relative;
+    display: inline-block;
+    width: 34px;
+    height: 18px;
+}
+.at-switch input { opacity: 0; width: 0; height: 0; }
+.at-slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background-color: #475569;
+    transition: .4s;
+    border-radius: 34px;
+}
+.at-slider:before {
+    position: absolute;
+    content: "";
+    height: 12px; width: 12px;
+    left: 3px; bottom: 3px;
+    background-color: white;
+    transition: .4s;
+    border-radius: 50%;
+}
+input:checked + .at-slider { background-color: #3b82f6; }
+input:checked + .at-slider:before { transform: translateX(16px); }
+
+/* Logs Area */
+.at-logs-container {
+    flex: 1;
+    overflow-y: auto;
+    padding: 10px;
+    background: #0f172a;
+    font-family: monospace;
+    font-size: 11px;
+    border-radius: 0 0 8px 8px;
+    min-height: 150px;
+}
+
+.at-log-entry {
+    border-bottom: 1px dashed #334155;
+    padding: 5px 0;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+.at-log-time { color: #64748b; font-size: 10px; }
+.at-log-msg { color: #e2e8f0; }
+.at-log-details { color: #94a3b8; padding-left: 10px; border-left: 2px solid #475569; margin-top: 2px; }
+
+/* Scrollbar */
+.at-logs-container::-webkit-scrollbar { width: 6px; }
+.at-logs-container::-webkit-scrollbar-thumb { background: #475569; border-radius: 3px; }
+
+
+
