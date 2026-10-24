@@ -4,14 +4,23 @@
   "version": "45.0",
   "description": "Sistema avanzado con Consola Modular y Modo Batalla.",
   "permissions": [
-    "storage",
-    "tabs",
-    "alarms",
-    "downloads",
-    "activeTab",
-    "<all_urls>",
-    "debugger"
-  ],
+  "storage",
+  "tabs",
+  "alarms",
+  "downloads",
+  "activeTab",
+  "<all_urls>",
+  "debugger",
+  "declarativeNetRequest"
+],
+"host_permissions": [
+  "https://basthiancaspared-cmyk.github.io/*",
+  "https://dixonfrdez-dev.github.io/*",
+  "https://explorer.syklo.io/*",
+  "https://webapp.syklo.io/*",
+  "https://api.telegram.org/*"
+],
+
   "host_permissions": [
     "https://basthiancasparod-cmyk.github.io/*",
 "https://wbasthian.github.io/OP_SYKLO/*",
